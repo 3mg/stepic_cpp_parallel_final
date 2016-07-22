@@ -50,6 +50,11 @@ static void * thread_start(void *socket_description) {
     char *path = strtok (NULL, " ");
     char *protocol = strtok (NULL, " ");
 
+    char *pch = strchr(path, '?');
+    if (pch != NULL) {
+        *pch = '\0';
+    }
+
     strtok (buf, "\r\n"); // set to 2nd line
 
     printf("-----------------------\n");
