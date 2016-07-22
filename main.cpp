@@ -33,8 +33,6 @@ pthread_mutex_t mymutex = PTHREAD_MUTEX_INITIALIZER;
 static void * thread_start(void *socket_description) {
     int cs = *(int*)socket_description;
 
-    pthread_mutex_unlock(&mymutex);
-
     printf("New request from %i\n", cs);
 
     char buf[BUFSIZ];
@@ -127,6 +125,8 @@ static void * thread_start(void *socket_description) {
     delete request;
 
     printf("Response sent to %i\n", cs);
+
+    pthread_mutex_unlock(&mymutex);
 
     return 0;
 }
