@@ -106,7 +106,6 @@ static void * thread_start(void *socket_description) {
         int r_size;
         while ((r_size = fread(&f_buf, sizeof(char), BUFSIZ, fptr)) > 0) {
             write(cs, &f_buf, sizeof(char) * r_size);
-            usleep(10);
         }
 
         fclose(fptr);
