@@ -92,10 +92,10 @@ static void * thread_start(void *socket_description) {
 
         content_length = file_stat.st_size;
 
-        ss<<"HTTP/1.1 "<<code<<" OK"<<"\r\n";
-        ss<<"Content-Length: "<<content_length<<"\r\n";
-        ss<<"Content-Type: text/html"<<"\r\n";
-        ss<<"Connection: Closed"<<"\r\n";
+        ss<<"HTTP/1.0 "<<code<<" OK"<<"\r\n";
+        //ss<<"Content-Length: "<<content_length<<"\r\n";
+        //ss<<"Content-Type: text/html"<<"\r\n";
+        //ss<<"Connection: Closed"<<"\r\n";
 
         ss<<"\r\n";
 
@@ -103,20 +103,22 @@ static void * thread_start(void *socket_description) {
         write(cs, s.c_str(), s.length());
 
         char f_buf;
-        while (fread(&f_buf, sizeof(char), 1, fptr) > 0) {
-            write(cs, &f_buf, sizeof(char));
+        int r_size;
+        while ((r_size = fread(&f_buf, sizeof(char), BUFSIZ, fptr)) > 0) {
+            write(cs, &f_buf, sizeof(char) * r_size);
+            usleep(10);
         }
 
         fclose(fptr);
     } else {
         code = 404;
 
-        ss<<"HTTP/1.1 "<<code<<" Not found"<<"\r\n";
-        ss<<"Content-Length: "<<content_length<<"\r\n";
+        ss<<"HTTP/1.0 "<<code<<" Not found"<<"\r\n";
+        ss<<"Content-Length: "<<"0"<<"\r\n";
         ss<<"Content-Type: text/html"<<"\r\n";
-        ss<<"Connection: Closed"<<"\r\n";
+        //ss<<"Connection: Closed"<<"\r\n";
 
-        ss<<"\r\n"<<content;
+        ss<<"\r\n"; //<<content;
 
         s = ss.str();
         write(cs, s.c_str(), s.length());
