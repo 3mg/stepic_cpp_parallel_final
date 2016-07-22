@@ -102,7 +102,7 @@ static void * thread_start(void *socket_description) {
         s = ss.str();
         write(cs, s.c_str(), s.length());
 
-        char f_buf;
+        char f_buf[BUFSIZ];
         int r_size;
         while ((r_size = fread(&f_buf, sizeof(char), BUFSIZ, fptr)) > 0) {
             write(cs, &f_buf, sizeof(char) * r_size);
@@ -260,9 +260,9 @@ int main(int argc, char **argv)
 
         chdir("/");
         setsid();
-        //fclose(stdin);
-        //fclose(stdout);
-        //fclose(stderr);
+        fclose(stdin);
+        fclose(stdout);
+        fclose(stderr);
 
         serve(host_s, port);
     } else {
