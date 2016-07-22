@@ -258,9 +258,9 @@ int main(int argc, char **argv)
 
         chdir("/");
         setsid();
-        fclose(stdin);
-        fclose(stdout);
-        fclose(stderr);
+        //fclose(stdin);
+        //fclose(stdout);
+        //fclose(stderr);
 
         serve(host_s, port);
     } else {
